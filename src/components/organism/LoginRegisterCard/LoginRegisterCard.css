@@ -1,0 +1,54 @@
+.switchButton-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.switchButton-container .link {
+  text-decoration: none;
+}
+
+.switchButton-container .link-active {
+  text-decoration: underline;
+}
+
+.card {
+  height: 36.5rem;
+}
+
+.login-register-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: fit-content;
+}
+
+.flip-card-container {
+  position: relative;
+}
+
+.card--front--position {
+  transform: rotateY(180deg);
+}
+
+.card--back--position {
+  position: absolute;
+  top: 0;
+  transform: rotateY(180deg);
+}
+
+.card__login--active {
+  transform: rotateY(0deg);
+}
+
+.card__register--active {
+  transform: rotateY(0deg);
+  position: absolute;
+}
+
+.input_field-error {
+  border-color: #D14040;
+  box-shadow: .4rem .4rem#D14040;
+}

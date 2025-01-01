@@ -1,0 +1,8 @@
+.ListGroup{
+    max-height: 33rem;
+}
+.ListItem p {
+    width: 14rem;
+    word-wrap: break-word;
+}
+
