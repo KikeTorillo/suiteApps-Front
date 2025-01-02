@@ -1,5 +1,6 @@
 .ListGroup{
     max-height: 33rem;
+    min-width: 27rem;
 }
 .ListItem p {
     width: 14rem;
