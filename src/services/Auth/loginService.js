@@ -12,7 +12,8 @@ const loginService = async (urlBackend, userValue, passValue) => {
         method: "POST",
         headers: myHeaders,
         body: raw,
-        redirect: "follow"
+        redirect: "follow",
+        credentials: 'include'
     };
 
     try {

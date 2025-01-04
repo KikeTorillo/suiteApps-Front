@@ -22,13 +22,12 @@ if (mode !== 'local') {
 }
 
 function TodoProvider({ children }) {
-    const fakeTodos = [{ text: 'SOY MAYUSCULA', done: true }, { text: 'revisar lavadora', done: true }, { text: 'ejemplo', done: false }];
-    const { tokenSession } = useContext(UserContext);
-
+    let userSession = null;
+    if (sessionStorage.getItem('sessionUser')) {
+        userSession = JSON.parse(sessionStorage.getItem('sessionUser'));
+    }
     const navigate = useNavigate();
-
     const [todos, setTodos] = useState([]);
-    const [newTodo, setNewTodo] = useState('')
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [searchValue, setSearchValue] = useState('');
@@ -55,29 +54,38 @@ function TodoProvider({ children }) {
         const id = todo.id;
         const done = !todo.done;
         setLoading(true);
-        const data = await updateTodoService(urlBackend, tokenSession.token, tokenSession.user.id, id, done);
+        const data = await updateTodoService(urlBackend, userSession.sub, id, done);
+        if (data.message === 'session expired') {
+            navigate('/login');
+        }
     };
 
     const deleteTodo = async (todoId) => {
         setLoading(true);
-        const data = await deleteTodoService(urlBackend, tokenSession.token, tokenSession.user.id, todoId);
+        const data = await deleteTodoService(urlBackend, userSession.sub, todoId);
+        if (data.message === 'session expired') {
+            navigate('/login');
+        }
     };
 
     const addNewTodo = async (text) => {
         setLoading(true);
-        const data = await createTodo(urlBackend, tokenSession.token, tokenSession.user.id, text);
+        const data = await createTodo(urlBackend, userSession.sub, text);
+        if (data.message === 'session expired') {
+            navigate('/login');
+        }
         setOpenModal(false);
     };
 
     useEffect(() => {
-        if (!tokenSession) {
+        if (!userSession) {
             navigate('/login');
             return;
         }
 
         async function fetchTodos() {
             try {
-                const data = await getTodos(urlBackend, tokenSession.token, tokenSession.user.id);
+                const data = await getTodos(urlBackend, userSession.sub);
                 setTimeout(() => {
                     setTodos(data);
                     setLoading(false);

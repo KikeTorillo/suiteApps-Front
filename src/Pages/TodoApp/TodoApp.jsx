@@ -30,19 +30,19 @@ function TodoApp() {
 
     return (
         <TodoTemplate
-        loading={loading}
-        error={error}
-        searchedTodos={searchedTodos}
-        completeTodo={completeTodo}
-        deleteTodo={deleteTodo}
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-        completedTodos={completedTodos}
-        totalTodos={totalTodos}
-        filterTodo={filterTodo}
-        setFilterTodo={setFilterTodo}
+            loading={loading}
+            error={error}
+            searchedTodos={searchedTodos}
+            completeTodo={completeTodo}
+            deleteTodo={deleteTodo}
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            completedTodos={completedTodos}
+            totalTodos={totalTodos}
+            filterTodo={filterTodo}
+            setFilterTodo={setFilterTodo}
         />
     );
 }

@@ -1,9 +1,7 @@
-const createTodo = async (urlBackend, token, userId, text) => {
-    const bearerToken = `Bearer ${token}`;
+const createTodo = async (urlBackend, userId, text) => {
     const myHeaders = new Headers();
     myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", bearerToken);
 
     let raw = JSON.stringify({
         "idUser": userId,
@@ -15,7 +13,8 @@ const createTodo = async (urlBackend, token, userId, text) => {
         method: "POST",
         headers: myHeaders,
         body: raw,
-        redirect: "follow"
+        redirect: "follow",
+        credentials: 'include'
     };
     try {
         const res = await fetch(`${urlBackend}/api/v1/todos`, requestOptions);

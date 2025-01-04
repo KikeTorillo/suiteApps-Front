@@ -15,7 +15,7 @@ import { LoginRegisterCard } from "../../components/organism/LoginRegisterCard/L
 import './Login.css'
 
 function Login() {
-  const { setTokenSession, urlBackend } = useContext(UserContext);
+  const {urlBackend } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
   const [isRecovering, setIsRecovering] = useState(false);
@@ -135,10 +135,11 @@ function Login() {
     async function loginUser() {
       const data = await loginService(urlBackend, formStatus.values.email, formStatus.values.password);
       if (data) {
-        if (data.token) {
+        if (data.sub) {
+          const sessionUser = JSON.stringify(data);
+          sessionStorage.setItem('sessionUser', sessionUser);
           setError(null);
           setIsLogin(false);
-          setTokenSession(data);
           navigate('/todo-app');
         } else {
           setIsLogin(false);
