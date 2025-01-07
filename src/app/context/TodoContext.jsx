@@ -11,15 +11,7 @@ import { createTodo } from '../../services/Todos/createTodo';
 import { deleteTodoService } from '../../services/Todos/deleteTodo';
 import { updateTodoService } from '../../services/Todos/updateTodo';
 
-
 const TodoContext = createContext();
-const mode = import.meta.env.VITE_MODE;
-let urlBackend = '';
-if (mode !== 'local') {
-    urlBackend = import.meta.env.VITE_HOST_VERCEL;
-} else {
-    urlBackend = import.meta.env.VITE_HOST_LOCAL;
-}
 
 function TodoProvider({ children }) {
     let userSession = null;
@@ -54,7 +46,7 @@ function TodoProvider({ children }) {
         const id = todo.id;
         const done = !todo.done;
         setLoading(true);
-        const data = await updateTodoService(urlBackend, userSession.sub, id, done);
+        const data = await updateTodoService(userSession.sub, id, done);
         if (data.message === 'session expired') {
             navigate('/login');
         }
@@ -62,7 +54,7 @@ function TodoProvider({ children }) {
 
     const deleteTodo = async (todoId) => {
         setLoading(true);
-        const data = await deleteTodoService(urlBackend, userSession.sub, todoId);
+        const data = await deleteTodoService(userSession.sub, todoId);
         if (data.message === 'session expired') {
             navigate('/login');
         }
@@ -70,7 +62,7 @@ function TodoProvider({ children }) {
 
     const addNewTodo = async (text) => {
         setLoading(true);
-        const data = await createTodo(urlBackend, userSession.sub, text);
+        const data = await createTodo(userSession.sub, text);
         if (data.message === 'session expired') {
             navigate('/login');
         }
@@ -85,7 +77,7 @@ function TodoProvider({ children }) {
 
         async function fetchTodos() {
             try {
-                const data = await getTodos(urlBackend, userSession.sub);
+                const data = await getTodos(userSession.sub);
                 setTimeout(() => {
                     setTodos(data);
                     setLoading(false);

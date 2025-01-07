@@ -1,10 +1,7 @@
 import React from "react";
-import { useState } from "react";
-import { useContext } from "react";
-import { useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext, useEffect } from "react";
 
-import { UserContext } from "../../app/context/UserContext";
+import { useNavigate } from 'react-router-dom';
 
 import { loginService } from "../../services/Auth/loginService";
 import { registrationService } from "../../services/Auth/registrationService";
@@ -12,10 +9,9 @@ import { recoveryService } from "../../services/Auth/recoveryService";
 
 import { LoginRegisterCard } from "../../components/organism/LoginRegisterCard/LoginRegisterCard";
 
-import './Login.css'
+import './LoginRegister.css'
 
-function Login() {
-  const {urlBackend } = useContext(UserContext);
+function LoginRegister() {
   const [error, setError] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
   const [isRecovering, setIsRecovering] = useState(false);
@@ -30,6 +26,7 @@ function Login() {
     validations: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
@@ -131,9 +128,36 @@ function Login() {
 
   };
 
+  const sendRecovery = () => {
+    const { email } = formStatus.values;
+    const validations = { email: ''};
+
+    validations.email = validateEmail(email);
+
+    const validationMesages = Object.values(validations).filter(
+      (validationMessage) => {
+        if (validationMessage) {
+          return validationMessage.length > 0;
+        }
+      }
+    )
+
+    const isValid = !validationMesages.length;
+
+    if (!isValid) {
+      const newFormStatus = { ...formStatus };
+      newFormStatus.validations = validations;
+      setFormStatus(newFormStatus);
+      return;
+    }
+
+    setIsRecovering(true);
+
+  };
+
   useEffect(() => {
     async function loginUser() {
-      const data = await loginService(urlBackend, formStatus.values.email, formStatus.values.password);
+      const data = await loginService(formStatus.values.email, formStatus.values.password);
       if (data) {
         if (data.sub) {
           const sessionUser = JSON.stringify(data);
@@ -154,7 +178,7 @@ function Login() {
 
   useEffect(() => {
     async function recoveryUser() {
-      const data = await recoveryService(urlBackend, formStatus.values.email);
+      const data = await recoveryService(formStatus.values.email);
       setIsRecovering(false);
     }
     if (isRecovering) {
@@ -164,7 +188,7 @@ function Login() {
 
   useEffect(() => {
     async function fetchRegister() {
-      const data = await registrationService(urlBackend, formStatus.values.email, formStatus.values.password);
+      const data = await registrationService(formStatus.values.email, formStatus.values.password);
       if (data) {
         if (data.message === 'user created') {
           setError(data.message);
@@ -190,17 +214,18 @@ function Login() {
   }
 
   return (
-    <div className="loginRegisterCard-Container">
+    <div className="login-register-Container">
       <LoginRegisterCard
         formStatus={formStatus}
+        setFormStatus={setFormStatus}
         handleChange={handleChange}
         validateOne={validateOne}
         validateAll={validateAll}
+        sendRecovery={sendRecovery}
         error={error}
       />
     </div>
-
   );
 }
 
-export { Login };
+export { LoginRegister };

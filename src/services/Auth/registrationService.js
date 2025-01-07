@@ -1,4 +1,8 @@
-const registrationService = async (urlBackend, userRegisterValue, passRegisterValue) => {
+import { environmentService } from "../environmentService";
+
+const registrationService = async (userRegisterValue, passRegisterValue) => {
+    const {urlBackend} = environmentService();
+    console.log(urlBackend);
     const myHeaders = new Headers();
     myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
     myHeaders.append("Content-Type", "application/json");

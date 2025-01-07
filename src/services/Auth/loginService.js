@@ -1,4 +1,7 @@
-const loginService = async (urlBackend, userValue, passValue) => {
+import { environmentService } from "../environmentService";
+
+const loginService = async (userValue, passValue) => {
+    const {urlBackend} = environmentService();
     const myHeaders = new Headers();
     myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
     myHeaders.append("Content-Type", "application/json");

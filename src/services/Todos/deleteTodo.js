@@ -1,4 +1,7 @@
-const deleteTodoService = async (urlBackend, userId, todoId) => {
+import { environmentService } from "../environmentService";
+
+const deleteTodoService = async (userId, todoId) => {
+    const {urlBackend} = environmentService();
     const myHeaders = new Headers();
     myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
     myHeaders.append("Content-Type", "application/json");

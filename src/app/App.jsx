@@ -3,14 +3,16 @@ import { useRoutes, BrowserRouter } from 'react-router-dom'
 import { TodoProvider } from './context/TodoContext'
 import { UserProvider } from "./context/UserContext";
 import { TodoApp } from '../Pages/TodoApp/TodoApp';
-import { Login } from "../Pages/Login/Login";
+import { LoginRegister } from "../Pages/LoginRegister/LoginRegister"; 
+import { ResetPass } from "../Pages/ResetPass/ResetPass"; 
 
 import './App.css';
 
 function AppRoutes() {
   const routes = useRoutes([
-    { path: '/', element: <Login /> },
-    { path: '/login', element: <Login /> },
+    { path: '/', element: <LoginRegister /> },
+    { path: '/login', element: <LoginRegister /> },
+    { path: '/resetpass', element: <ResetPass /> },
     { path: '/todo-app', element: <TodoProvider><TodoApp /></TodoProvider> },
     { path: '/*', element: '' },
   ])

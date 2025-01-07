@@ -1,4 +1,7 @@
-const getTodos = async (urlBackend, userId) => {
+import { environmentService } from "../environmentService";
+
+const getTodos = async (userId) => {
+    const {urlBackend} = environmentService();
     const myHeaders = new Headers();
     myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
 
