@@ -11,7 +11,7 @@ import { Loader } from '../../atoms/Loader/Loader'
 import { Modal } from '../../../Modals/Modal'
 import { TodoForm } from '../../molecules/TodoForm/TodoForm'
 
-import { DndContext, closestCenter, useSensor, useSensors, PointerSensor} from '@dnd-kit/core';
+import { DndContext, closestCenter, useSensor, useSensors, PointerSensor } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 import './TodoTemplate.css'
@@ -34,14 +34,21 @@ function TodoTemplate({
 }) {
 
     const sensors = useSensors(
-        useSensor(PointerSensor,{
+        useSensor(PointerSensor, {
             activationConstraint: {
-                distance:3,
+                distance: 3,
+            },
+        }),
+        useSensor(TouchSensor, {
+            // Press delay of 250ms, with tolerance of 5px of movement
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
             },
         })
     );
 
-    const handleDragEnd = () => {};
+    const handleDragEnd = () => { };
 
     return (
         <div className='todoApp-container'>
@@ -89,12 +96,12 @@ function TodoTemplate({
                 <div className='todoList-container'>
                     <ListGroup>
                         <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}>
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}>
                             <SortableContext
-                            items={searchedTodos}
-                            strategy={verticalListSortingStrategy}
+                                items={searchedTodos}
+                                strategy={verticalListSortingStrategy}
                             >
                                 {(!error && !loading && totalTodos === 0) && <p>Crea tu primer To-do</p>}
                                 {searchedTodos.map((todo) => {
