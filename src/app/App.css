@@ -2,6 +2,7 @@
   font-family: 'itim';
   src: url('./../Fonts/Itim-Regular.ttf');
 }
+
 @font-face {
   font-family: 'krub';
   src: url('./../Fonts/Krub-SemiBold.ttf');
@@ -33,22 +34,29 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-.p-1{
+#modal {
+  font-family: itim, Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+.p-1 {
   padding: 1rem;
 }
 
-.p-2{
+.p-2 {
   padding: 2rem;
 }
 
-.p-3{
+.p-3 {
   padding: 3rem;
 }
 
-.p-4{
+.p-4 {
   padding: 4rem;
 }
 
-.p-5{
+.p-5 {
   padding: 5rem;
 }

@@ -3,35 +3,34 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { TodoContext } from "../../../app/context/TodoContext";
 
+import { Card } from "../../atoms/Card/Card";
+import { TextContent } from "../../atoms/TextContent/TextContent";
+import { Button } from "../../atoms/Button/Button";
+
 import './TodoForm.css'
 function TodoForm() {
     const { openModal, setOpenModal, addNewTodo } = useContext(TodoContext);
     const [textValue, setTextValue] = useState('');
     return (
-        <form className="form-container">
-            <label>Escribe tu nuevo To-do</label>
+        <Card className='create-todo-modal'>
+            <TextContent> Escribe tu nuevo To-do </TextContent>
             <textarea
                 value={textValue}
                 onChange={(event) => {
                     setTextValue(event.target.value);
                 }} />
             <div className="buttons-container">
-                <button
-                    className="cancelButton"
+                <Button
+                    text='Cancelar'
                     onClick={() => setOpenModal(!openModal)}
-                >
-                    Cancelar
-                </button>
-                <button
-                    type="button"
+                />
+                <Button
+                    text='Agregar'
                     className="addButton"
                     onClick={() => addNewTodo(textValue)}
-                >
-                    Agregar
-                </button>
+                />
             </div>
-
-        </form>
+        </Card>
     );
 }
 

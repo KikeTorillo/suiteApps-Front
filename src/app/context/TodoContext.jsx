@@ -45,28 +45,30 @@ function TodoProvider({ children }) {
     const completeTodo = async (todo) => {
         const id = todo.id;
         const done = !todo.done;
-        setLoading(true);
         const data = await updateTodoService(userSession.sub, id, done);
         if (data.message === 'session expired') {
             navigate('/login');
         }
+        setLoading(true);
     };
 
     const deleteTodo = async (todoId) => {
-        setLoading(true);
         const data = await deleteTodoService(userSession.sub, todoId);
         if (data.message === 'session expired') {
             navigate('/login');
         }
+        setLoading(true);
     };
 
     const addNewTodo = async (text) => {
-        setLoading(true);
-        const data = await createTodo(userSession.sub, text);
-        if (data.message === 'session expired') {
-            navigate('/login');
+        if (text) {
+            const data = await createTodo(userSession.sub, text);
+            if (data.message === 'session expired') {
+                navigate('/login');
+            }
+            setOpenModal(false);
+            setLoading(true);
         }
-        setOpenModal(false);
     };
 
     useEffect(() => {
@@ -78,11 +80,9 @@ function TodoProvider({ children }) {
         async function fetchTodos() {
             try {
                 const data = await getTodos(userSession.sub);
-                setTimeout(() => {
-                    setTodos(data);
-                    setLoading(false);
-                    setError(null);
-                }, 1000);
+                setLoading(false);
+                setError(null);
+                setTodos(data);
             } catch (error) {
                 console.log(error);
                 setLoading(false);

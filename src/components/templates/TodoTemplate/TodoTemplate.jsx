@@ -11,6 +11,9 @@ import { Loader } from '../../atoms/Loader/Loader'
 import { Modal } from '../../../Modals/Modal'
 import { TodoForm } from '../../molecules/TodoForm/TodoForm'
 
+import { DndContext, closestCenter, useSensor, useSensors, PointerSensor} from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+
 import './TodoTemplate.css'
 
 
@@ -29,6 +32,16 @@ function TodoTemplate({
     filterTodo,
     setFilterTodo
 }) {
+
+    const sensors = useSensors(
+        useSensor(PointerSensor,{
+            activationConstraint: {
+                distance:3,
+            },
+        })
+    );
+
+    const handleDragEnd = () => {};
 
     return (
         <div className='todoApp-container'>
@@ -75,10 +88,20 @@ function TodoTemplate({
             {(loading === false && !error) && (
                 <div className='todoList-container'>
                     <ListGroup>
-                        {(!error && !loading && totalTodos === 0) && <p>Crea tu primer To-do</p>}
-                        {searchedTodos.map((todo) => {
-                            return <TodoListItem text={todo.to_do} key={todo.id} done={todo.done} completeTodo={() => completeTodo(todo)} deleteTodo={() => deleteTodo(todo.id)} />
-                        })}
+                        <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}>
+                            <SortableContext
+                            items={searchedTodos}
+                            strategy={verticalListSortingStrategy}
+                            >
+                                {(!error && !loading && totalTodos === 0) && <p>Crea tu primer To-do</p>}
+                                {searchedTodos.map((todo) => {
+                                    return <TodoListItem todo={todo} key={todo.id} completeTodo={() => completeTodo(todo)} deleteTodo={() => deleteTodo(todo.id)} />
+                                })}
+                            </SortableContext>
+                        </DndContext>
                     </ListGroup>
                     <IconButton
                         iconStyle='createTodoButton'

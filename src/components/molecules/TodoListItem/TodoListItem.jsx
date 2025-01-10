@@ -1,24 +1,27 @@
 import React from "react";
 
-import { ListItem } from '../../atoms/ListItem/ListItem';
+import { ListItemDraggable } from "../../atoms/ListItemDraggable/ListItemDraggable";
 import { IconButton } from "../../atoms/IconButton/IconButton";
 
 import './TodoListItem.css';
 
-function TodoListItem({ text, done, completeTodo, deleteTodo }) {
+function TodoListItem({ todo, completeTodo, deleteTodo }) {
+
     return (
-        <ListItem>
+        <ListItemDraggable
+            id={todo.id}
+        >
             <IconButton
-                iconStyle={done ? 'checkedButton' : 'uncheckButton'}
+                iconStyle={todo.done ? 'checkedButton' : 'uncheckButton'}
                 onClick={completeTodo}
             />
-            <p>{text}</p>
+            <p>{todo.to_do}</p>
             <IconButton
                 iconStyle="trashButton"
                 onClick={deleteTodo}
             />
 
-        </ListItem>
+        </ListItemDraggable>
     );
 }
 
