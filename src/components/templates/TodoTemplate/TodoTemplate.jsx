@@ -11,7 +11,7 @@ import { Loader } from '../../atoms/Loader/Loader'
 import { Modal } from '../../../Modals/Modal'
 import { TodoForm } from '../../molecules/TodoForm/TodoForm'
 
-import { DndContext, closestCenter, useSensor, useSensors, PointerSensor } from '@dnd-kit/core';
+import { DndContext, closestCenter, useSensor, useSensors, PointerSensor, TouchSensor } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 import './TodoTemplate.css'
