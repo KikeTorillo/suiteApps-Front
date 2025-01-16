@@ -48,7 +48,11 @@ function TodoTemplate({
         })
     );
 
-    const handleDragEnd = () => { };
+    const handleDragEnd = (event) => { 
+        const { active, over } = event;
+        console.log('active',active);
+        console.log('over', over);
+    };
 
     return (
         <div className='todoApp-container'>
@@ -98,14 +102,15 @@ function TodoTemplate({
                         <DndContext
                             sensors={sensors}
                             collisionDetection={closestCenter}
-                            onDragEnd={handleDragEnd}>
+                            onDragEnd={handleDragEnd}
+                            >
                             <SortableContext
                                 items={searchedTodos}
                                 strategy={verticalListSortingStrategy}
                             >
                                 {(!error && !loading && totalTodos === 0) && <p>Crea tu primer To-do</p>}
                                 {searchedTodos.map((todo,index) => {
-                                    return <TodoListItem todo={todo} key={index} completeTodo={() => completeTodo(todo.toDo)} deleteTodo={() => deleteTodo(todo.toDo)} />
+                                    return <TodoListItem id={index} todo={todo} key={index} completeTodo={() => completeTodo(todo.toDo)} deleteTodo={() => deleteTodo(todo.toDo)} />
                                 })}
                             </SortableContext>
                         </DndContext>

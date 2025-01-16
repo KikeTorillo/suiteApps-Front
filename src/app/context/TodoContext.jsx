@@ -2,7 +2,7 @@ import { useState, createContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { getTodos } from '../../services/Todos/getTodos';
-import { createAndUpdateTodo } from '../../services/Todos/createAndUpdateTodo';
+import { createUpdateDeleteTodo } from '../../services/Todos/createUpdateDeleteTodo';
 
 const TodoContext = createContext();
 
@@ -41,9 +41,10 @@ function TodoProvider({ children }) {
             return todo.toDo == toDo;
         });
         newTodos.splice(todoIndex, 1);
-        const data = await createAndUpdateTodo(userSession.sub, newTodos);
-        if (data.message === 'session expired') {
+        const data = await createUpdateDeleteTodo(userSession.sub, newTodos);
+        if (data.message === 'session expired' && data.error) {
             navigate('/login');
+            return;
         }
         setLoading(true);
     };
@@ -56,9 +57,10 @@ function TodoProvider({ children }) {
         };
         newTodos.push(todoContent);
         if (text) {
-            const data = await createAndUpdateTodo(userSession.sub, newTodos);
-            if (data.message === 'session expired') {
+            const data = await createUpdateDeleteTodo(userSession.sub, newTodos);
+            if (data.message === 'session expired' && data.error) {
                 navigate('/login');
+                return;
             }
             setOpenModal(false);
             setLoading(true);
@@ -70,28 +72,27 @@ function TodoProvider({ children }) {
         const todoIndex = newTodos.findIndex((todo) => {
             return todo.toDo == toDo;
         });
-
-        //console.log(todoIndex);
         newTodos[todoIndex].done = !newTodos[todoIndex].done;
-
-        const data = await createAndUpdateTodo(userSession.sub, newTodos);
+        const data = await createUpdateDeleteTodo(userSession.sub, newTodos);
+        if (data.message === 'session expired' && data.error) {
+            navigate('/login');
+            return;
+        }
         setLoading(true);
     };
 
     useEffect(() => {
-        if (!userSession) {
-            navigate('/login');
-            return;
-        }
-
         async function fetchTodos() {
             try {
                 const data = await getTodos(userSession.sub);
+                if (data.message === 'session expired' && data.error) {
+                    navigate('/login');
+                    return;
+                }
                 setLoading(false);
                 setError(null);
                 setTodos(data);
             } catch (error) {
-                console.log(error);
                 setLoading(false);
                 setError(error);
             }

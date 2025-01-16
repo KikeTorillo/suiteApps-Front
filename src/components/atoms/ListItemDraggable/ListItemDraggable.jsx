@@ -14,12 +14,12 @@ function ListItemDraggable({children, id}) {
         transition
     } = useSortable({
         id: id
-    })
+    });
 
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition
-    }
+        transition,
+    };
 
     return (
         <li

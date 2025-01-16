@@ -5,11 +5,10 @@ import { IconButton } from "../../atoms/IconButton/IconButton";
 
 import './TodoListItem.css';
 
-function TodoListItem({ todo, completeTodo, deleteTodo }) {
-
+function TodoListItem({ id, todo, completeTodo, deleteTodo }) {
     return (
         <ListItemDraggable
-            id={todo.id}
+            id={id}
         >
             <IconButton
                 iconStyle={todo.done ? 'checkedButton' : 'uncheckButton'}

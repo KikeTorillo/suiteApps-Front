@@ -1,6 +1,6 @@
 import { environmentService } from "../environmentService";
 
-const createAndUpdateTodo = async (userId, toDo) => {
+const createUpdateDeleteTodo = async (userId, toDo) => {
     const {urlBackend} = environmentService();
     const myHeaders = new Headers();
     myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
@@ -28,4 +28,4 @@ const createAndUpdateTodo = async (userId, toDo) => {
     }
 }
 
-export { createAndUpdateTodo };
+export { createUpdateDeleteTodo };
