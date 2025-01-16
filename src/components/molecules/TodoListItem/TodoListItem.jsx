@@ -15,7 +15,7 @@ function TodoListItem({ todo, completeTodo, deleteTodo }) {
                 iconStyle={todo.done ? 'checkedButton' : 'uncheckButton'}
                 onClick={completeTodo}
             />
-            <p>{todo.to_do}</p>
+            <p>{todo.toDo}</p>
             <IconButton
                 iconStyle="trashButton"
                 onClick={deleteTodo}

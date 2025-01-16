@@ -1,15 +1,8 @@
 import { useState, createContext, useEffect } from 'react'
-import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { useLocalStorage } from '../../hooks/useLocalStorage'
-
-import { UserContext } from './UserContext';
-
 import { getTodos } from '../../services/Todos/getTodos';
-import { createTodo } from '../../services/Todos/createTodo';
-import { deleteTodoService } from '../../services/Todos/deleteTodo';
-import { updateTodoService } from '../../services/Todos/updateTodo';
+import { createAndUpdateTodo } from '../../services/Todos/createAndUpdateTodo';
 
 const TodoContext = createContext();
 
@@ -33,7 +26,7 @@ function TodoProvider({ children }) {
     });
 
     const searchedTodos = todos.filter((todo) => {
-        if (todo.to_do.toLowerCase().includes(searchValue.toLowerCase())) {
+        if (todo.toDo.toLowerCase().includes(searchValue.toLowerCase())) {
             if (!todo.done && filterTodo === 'progress') {
                 return todo;
             } else if (todo.done && filterTodo === 'end') {
@@ -42,33 +35,47 @@ function TodoProvider({ children }) {
         }
     });
 
-    const completeTodo = async (todo) => {
-        const id = todo.id;
-        const done = !todo.done;
-        const data = await updateTodoService(userSession.sub, id, done);
+    const deleteTodo = async (toDo) => {
+        const newTodos = [...todos];
+        const todoIndex = newTodos.findIndex((todo) => {
+            return todo.toDo == toDo;
+        });
+        newTodos.splice(todoIndex, 1);
+        const data = await createAndUpdateTodo(userSession.sub, newTodos);
         if (data.message === 'session expired') {
             navigate('/login');
         }
         setLoading(true);
     };
 
-    const deleteTodo = async (todoId) => {
-        const data = await deleteTodoService(userSession.sub, todoId);
-        if (data.message === 'session expired') {
-            navigate('/login');
-        }
-        setLoading(true);
-    };
-
-    const addNewTodo = async (text) => {
+    const createTodo = async (text) => {
+        const newTodos = [...todos];
+        const todoContent = {
+            toDo: text,
+            done: false
+        };
+        newTodos.push(todoContent);
         if (text) {
-            const data = await createTodo(userSession.sub, text);
+            const data = await createAndUpdateTodo(userSession.sub, newTodos);
             if (data.message === 'session expired') {
                 navigate('/login');
             }
             setOpenModal(false);
             setLoading(true);
         }
+    };
+
+    const completeTodo = async (toDo) => {
+        const newTodos = [...todos];
+        const todoIndex = newTodos.findIndex((todo) => {
+            return todo.toDo == toDo;
+        });
+
+        //console.log(todoIndex);
+        newTodos[todoIndex].done = !newTodos[todoIndex].done;
+
+        const data = await createAndUpdateTodo(userSession.sub, newTodos);
+        setLoading(true);
     };
 
     useEffect(() => {
@@ -98,15 +105,15 @@ function TodoProvider({ children }) {
                 loading,
                 error,
                 completedTodos,
+                completeTodo,
                 totalTodos,
                 searchValue,
                 setSearchValue,
                 searchedTodos,
-                completeTodo,
                 deleteTodo,
                 openModal,
                 setOpenModal,
-                addNewTodo,
+                createTodo,
                 filterTodo,
                 setFilterTodo
             }

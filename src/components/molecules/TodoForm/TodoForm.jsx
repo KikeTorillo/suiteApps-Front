@@ -9,7 +9,7 @@ import { Button } from "../../atoms/Button/Button";
 
 import './TodoForm.css'
 function TodoForm() {
-    const { openModal, setOpenModal, addNewTodo } = useContext(TodoContext);
+    const { openModal, setOpenModal, createTodo } = useContext(TodoContext);
     const [textValue, setTextValue] = useState('');
     return (
         <Card className='create-todo-modal'>
@@ -27,7 +27,7 @@ function TodoForm() {
                 <Button
                     text='Agregar'
                     className="addButton"
-                    onClick={() => addNewTodo(textValue)}
+                    onClick={() => createTodo(textValue)}
                 />
             </div>
         </Card>

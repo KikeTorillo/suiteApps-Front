@@ -104,8 +104,8 @@ function TodoTemplate({
                                 strategy={verticalListSortingStrategy}
                             >
                                 {(!error && !loading && totalTodos === 0) && <p>Crea tu primer To-do</p>}
-                                {searchedTodos.map((todo) => {
-                                    return <TodoListItem todo={todo} key={todo.id} completeTodo={() => completeTodo(todo)} deleteTodo={() => deleteTodo(todo.id)} />
+                                {searchedTodos.map((todo,index) => {
+                                    return <TodoListItem todo={todo} key={index} completeTodo={() => completeTodo(todo.toDo)} deleteTodo={() => deleteTodo(todo.toDo)} />
                                 })}
                             </SortableContext>
                         </DndContext>
