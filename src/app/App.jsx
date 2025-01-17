@@ -3,8 +3,8 @@ import { useRoutes, BrowserRouter } from 'react-router-dom'
 import { TodoProvider } from './context/TodoContext'
 import { UserProvider } from "./context/UserContext";
 import { TodoApp } from '../Pages/TodoApp/TodoApp';
-import { LoginRegister } from "../Pages/LoginRegister/LoginRegister"; 
-import { ResetPass } from "../Pages/ResetPass/ResetPass"; 
+import { LoginRegister } from "../Pages/LoginRegister/LoginRegister";
+import { ResetPass } from "../Pages/ResetPass/ResetPass";
 
 import './App.css';
 
@@ -26,7 +26,6 @@ function App() {
         <AppRoutes />
       </UserProvider>
     </BrowserRouter>
-
   );
 }
 

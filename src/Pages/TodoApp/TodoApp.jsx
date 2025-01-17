@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useContext } from 'react'
 import { TodoContext } from '../../app/context/TodoContext'
 
@@ -8,6 +8,8 @@ import { Modal } from '../../Modals/Modal'
 import { TodoForm } from '../../components/molecules/TodoForm/TodoForm'
 
 import './TodoApp.css'
+
+import { TodoListItem } from '../../components/molecules/TodoListItem/TodoListItem'
 
 
 function TodoApp() {
@@ -25,7 +27,9 @@ function TodoApp() {
         completedTodos,
         totalTodos,
         filterTodo,
-        setFilterTodo
+        setFilterTodo,
+        todos,
+        updateTodosOrder
     } = useContext(TodoContext);
 
     return (
@@ -43,8 +47,11 @@ function TodoApp() {
             totalTodos={totalTodos}
             filterTodo={filterTodo}
             setFilterTodo={setFilterTodo}
+            todos={todos}
+            updateTodosOrder={updateTodosOrder}
         />
     );
+    
 }
 
 export { TodoApp };

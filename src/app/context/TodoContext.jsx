@@ -25,14 +25,18 @@ function TodoProvider({ children }) {
         }
     });
 
-    const searchedTodos = todos.filter((todo) => {
+    const todosFiltered = todos.filter((todo) => {
         if (todo.toDo.toLowerCase().includes(searchValue.toLowerCase())) {
             if (!todo.done && filterTodo === 'progress') {
-                return todo;
+                return todo.toDo;
             } else if (todo.done && filterTodo === 'end') {
-                return todo;
+                return todo.toDo;
             }
         }
+    });
+
+    const searchedTodos = todosFiltered.map((todo) => {
+        return {...todo,id:todo.toDo};
     });
 
     const deleteTodo = async (toDo) => {
@@ -81,6 +85,16 @@ function TodoProvider({ children }) {
         setLoading(true);
     };
 
+    const updateTodosOrder = async (toDos) => {
+        const newTodos = toDos;
+        const data = await createUpdateDeleteTodo(userSession.sub, newTodos);
+        if (data.message === 'session expired' && data.error) {
+            navigate('/login');
+            return;
+        }
+        setLoading(true);
+    };
+
     useEffect(() => {
         async function fetchTodos() {
             try {
@@ -116,7 +130,9 @@ function TodoProvider({ children }) {
                 setOpenModal,
                 createTodo,
                 filterTodo,
-                setFilterTodo
+                setFilterTodo,
+                todos,
+                updateTodosOrder
             }
         }>
             {children}

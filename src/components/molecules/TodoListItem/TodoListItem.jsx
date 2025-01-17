@@ -5,23 +5,41 @@ import { IconButton } from "../../atoms/IconButton/IconButton";
 
 import './TodoListItem.css';
 
-function TodoListItem({ id, todo, completeTodo, deleteTodo }) {
-    return (
-        <ListItemDraggable
-            id={id}
-        >
-            <IconButton
-                iconStyle={todo.done ? 'checkedButton' : 'uncheckButton'}
-                onClick={completeTodo}
-            />
-            <p>{todo.toDo}</p>
-            <IconButton
-                iconStyle="trashButton"
-                onClick={deleteTodo}
-            />
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-        </ListItemDraggable>
-    );
+
+function TodoListItem({ toDo,completeTodo, deleteTodo}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: toDo.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <li
+      ref={setNodeRef} style={style} {...attributes} {...listeners}
+      className="ListItem"
+    >
+      <IconButton
+        iconStyle={toDo.done ? 'checkedButton' : 'uncheckButton'}
+        onClick={completeTodo}
+      />
+      <p>{toDo.toDo}</p>
+      <IconButton
+        iconStyle="trashButton"
+        onClick={deleteTodo}
+      />
+
+    </li>
+  );
 }
 
 export { TodoListItem }

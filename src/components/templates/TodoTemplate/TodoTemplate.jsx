@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { TextInput } from '../../atoms/TextInput/TextInput'
 import { TextContent } from '../../atoms/TextContent/TextContent'
@@ -11,125 +11,148 @@ import { Loader } from '../../atoms/Loader/Loader'
 import { Modal } from '../../../Modals/Modal'
 import { TodoForm } from '../../molecules/TodoForm/TodoForm'
 
-import { DndContext, closestCenter, useSensor, useSensors, PointerSensor, TouchSensor } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-
 import './TodoTemplate.css'
 
 
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+
+
 function TodoTemplate({
-    loading,
-    error,
-    searchedTodos,
-    completeTodo,
-    deleteTodo,
-    openModal,
-    setOpenModal,
-    searchValue,
-    setSearchValue,
-    completedTodos,
-    totalTodos,
-    filterTodo,
-    setFilterTodo
+  loading,
+  error,
+  searchedTodos,
+  completeTodo,
+  deleteTodo,
+  openModal,
+  setOpenModal,
+  searchValue,
+  setSearchValue,
+  completedTodos,
+  totalTodos,
+  filterTodo,
+  setFilterTodo,
+  todos,
+  updateTodosOrder
 }) {
 
-    const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 3,
-            },
-        }),
-        useSensor(TouchSensor, {
-            // Press delay of 250ms, with tolerance of 5px of movement
-            activationConstraint: {
-                delay: 250,
-                tolerance: 5,
-            },
-        })
-    );
+  function handleDragEnd(event) {
+    const { active, over } = event;
+    const oldIndex = todos.findIndex(todo => todo.toDo === active.id);
+    const newIndex = todos.findIndex(todo => todo.toDo === over.id);
+    const newOrder = arrayMove(todos,oldIndex,newIndex);
+    updateTodosOrder(newOrder);
+  }
 
-    const handleDragEnd = (event) => { 
-        const { active, over } = event;
-        console.log('active',active);
-        console.log('over', over);
-    };
 
-    return (
-        <div className='todoApp-container'>
-            <div className='section-headers-container'>
-                <TextContent textStyle="header-1">
-                    Mis Pendientes
-                </TextContent>
-                <TextContent textStyle="body">
-                    Has completado {completedTodos.length} de {totalTodos} to-do's
-                </TextContent>
-                <div className='search-filter-container'>
-                    <TextInput type="text" placeholder="Buscar To-Do"
-                        value={searchValue}
-                        onChange={(event) => {
-                            setSearchValue(event.target.value);
-                        }}
-                    />
-                    <div className='todoFilter-container'>
-                        <Button
-                            text='En progreso'
-                            className={filterTodo === 'progress' ? 'selected' : ''}
-                            onClick={() => setFilterTodo('progress')}
-                        />
-                        <Button
-                            text='Finalizado'
-                            className={filterTodo === 'end' ? 'selected' + ' overButton' : '' + 'overButton'}
-                            onClick={() => setFilterTodo('end')}
-                        />
-                    </div>
-                </div>
-            </div>
-            {loading && (
-                <div>
-                    <Loader styleLoader='gearLoader' />
-                </div>
-            )
 
-            }
-            {error && (
-                <div>
-                    <p>Hubo un error al cargar To-dos</p>
-                </div>
-            )}
-            {(loading === false && !error) && (
-                <div className='todoList-container'>
-                    <ListGroup>
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={handleDragEnd}
-                            >
-                            <SortableContext
-                                items={searchedTodos}
-                                strategy={verticalListSortingStrategy}
-                            >
-                                {(!error && !loading && totalTodos === 0) && <p>Crea tu primer To-do</p>}
-                                {searchedTodos.map((todo,index) => {
-                                    return <TodoListItem id={index} todo={todo} key={index} completeTodo={() => completeTodo(todo.toDo)} deleteTodo={() => deleteTodo(todo.toDo)} />
-                                })}
-                            </SortableContext>
-                        </DndContext>
-                    </ListGroup>
-                    <IconButton
-                        iconStyle='createTodoButton'
-                        onClick={() => setOpenModal(!openModal)}
-                    />
-                </div>
-            )
-            }
+  const sensors = useSensors(
+      useSensor(PointerSensor, {
+          activationConstraint: {
+              distance: 3,
+          },
+      }),
+      useSensor(TouchSensor, {
+          // Press delay of 250ms, with tolerance of 5px of movement
+          activationConstraint: {
+              delay: 250,
+              tolerance: 5,
+          },
+      })
+  );
 
-            {openModal && (
-                <Modal>
-                    <TodoForm />
-                </Modal>
-            )}
+  return (
+    <div className='todoApp-container'>
+      <div className='section-headers-container'>
+        <TextContent textStyle="header-1">
+          Mis Pendientes
+        </TextContent>
+        <TextContent textStyle="body">
+          Has completado {completedTodos.length} de {totalTodos} to-do's
+        </TextContent>
+        <div className='search-filter-container'>
+          <TextInput type="text" placeholder="Buscar To-Do"
+            value={searchValue}
+            onChange={(event) => {
+              setSearchValue(event.target.value);
+            }}
+          />
+          <div className='todoFilter-container'>
+            <Button
+              text='En progreso'
+              className={filterTodo === 'progress' ? 'selected' : ''}
+              onClick={() => setFilterTodo('progress')}
+            />
+            <Button
+              text='Finalizado'
+              className={filterTodo === 'end' ? 'selected' + ' overButton' : '' + 'overButton'}
+              onClick={() => setFilterTodo('end')}
+            />
+          </div>
         </div>
-    );
+      </div>
+      {loading && (
+        <div>
+          <Loader styleLoader='gearLoader' />
+        </div>
+      )
+
+      }
+      {error && (
+        <div>
+          <p>Hubo un error al cargar To-dos</p>
+        </div>
+      )}
+      {(loading === false && !error) && (
+        <div className='todoList-container'>
+          <ListGroup>
+            {(!error && !loading && totalTodos === 0) && <p>Crea tu primer To-do</p>}
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={searchedTodos}
+                strategy={verticalListSortingStrategy}
+              >
+                {
+                  searchedTodos.map((toDo) => {
+                  return <TodoListItem key={toDo.toDo} toDo={toDo} completeTodo={() => completeTodo(toDo.toDo)} deleteTodo={() => deleteTodo(toDo.toDo)} />
+                })
+                }
+              </SortableContext>
+            </DndContext>
+          </ListGroup>
+          <IconButton
+            iconStyle='createTodoButton'
+            onClick={() => setOpenModal(!openModal)}
+          />
+        </div>
+      )}
+      {openModal && (
+        <Modal>
+          <TodoForm />
+        </Modal>
+      )}
+    </div>
+  );
+
+
+
 }
 
 export { TodoTemplate };
