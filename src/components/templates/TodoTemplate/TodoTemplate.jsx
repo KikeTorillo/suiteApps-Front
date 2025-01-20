@@ -51,13 +51,11 @@ function TodoTemplate({
 
   function handleDragEnd(event) {
     const { active, over } = event;
-    const oldIndex = todos.findIndex(todo => todo.toDo === active.id);
-    const newIndex = todos.findIndex(todo => todo.toDo === over.id);
+    const oldIndex = todos.findIndex(todo => todo.id === active.id);
+    const newIndex = todos.findIndex(todo => todo.id === over.id);
     const newOrder = arrayMove(todos,oldIndex,newIndex);
     updateTodosOrder(newOrder);
   }
-
-
 
   const sensors = useSensors(
       useSensor(PointerSensor, {
@@ -131,7 +129,7 @@ function TodoTemplate({
               >
                 {
                   searchedTodos.map((toDo) => {
-                  return <TodoListItem key={toDo.toDo} toDo={toDo} completeTodo={() => completeTodo(toDo.toDo)} deleteTodo={() => deleteTodo(toDo.toDo)} />
+                  return <TodoListItem key={toDo.id} toDo={toDo} completeTodo={() => completeTodo(toDo)} deleteTodo={() => deleteTodo(toDo)} />
                 })
                 }
               </SortableContext>

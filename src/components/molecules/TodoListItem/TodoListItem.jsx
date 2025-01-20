@@ -1,6 +1,5 @@
 import React from "react";
 
-import { ListItemDraggable } from "../../atoms/ListItemDraggable/ListItemDraggable";
 import { IconButton } from "../../atoms/IconButton/IconButton";
 
 import './TodoListItem.css';
@@ -9,11 +8,12 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 
-function TodoListItem({ toDo,completeTodo, deleteTodo}) {
+function TodoListItem({ toDo, completeTodo, deleteTodo }) {
   const {
     attributes,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition,
   } = useSortable({ id: toDo.id });
@@ -25,8 +25,9 @@ function TodoListItem({ toDo,completeTodo, deleteTodo}) {
 
   return (
     <li
-      ref={setNodeRef} style={style} {...attributes} {...listeners}
-      className="ListItem"
+      ref={setNodeRef} style={style}
+      className="ListItem" handle="true" {...attributes}
+
     >
       <IconButton
         iconStyle={toDo.done ? 'checkedButton' : 'uncheckButton'}
@@ -34,10 +35,15 @@ function TodoListItem({ toDo,completeTodo, deleteTodo}) {
       />
       <p>{toDo.toDo}</p>
       <IconButton
+
         iconStyle="trashButton"
         onClick={deleteTodo}
       />
-
+      <span
+        className="dragButton"
+        ref={setActivatorNodeRef}
+        {...listeners}
+      ></span>
     </li>
   );
 }

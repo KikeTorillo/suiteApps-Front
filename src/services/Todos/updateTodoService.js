@@ -1,18 +1,17 @@
 import { environmentService } from "../environmentService";
 
-const createUpdateDeleteTodo = async (userId, toDo) => {
+const updateTodoService = async (toDo) => {
     const {urlBackend} = environmentService();
     const myHeaders = new Headers();
     myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
     myHeaders.append("Content-Type", "application/json");
 
     let raw = JSON.stringify({
-        "userId": userId,
         "toDo": toDo
     });
 
     const requestOptions = {
-        method: "POST",
+        method: "PATCH",
         headers: myHeaders,
         body: raw,
         redirect: "follow",
@@ -28,4 +27,4 @@ const createUpdateDeleteTodo = async (userId, toDo) => {
     }
 }
 
-export { createUpdateDeleteTodo };
+export { updateTodoService };
