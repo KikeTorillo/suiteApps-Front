@@ -1,6 +1,6 @@
 function environmentService() {
     const mode = import.meta.env.VITE_MODE;
-    const apiKey = import.meta.env.API_KEY;
+    const apiKey = import.meta.env.VITE_API_KEY;
     let urlBackend = '';
     let urlFront = ''
     if (mode !== 'local') {
