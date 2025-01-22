@@ -1,9 +1,9 @@
 import { environmentService } from "../environmentService";
 
 const deleteTodoService = async (toDo) => {
-    const {urlBackend} = environmentService();
+    const {urlBackend, apiKey} = environmentService();
     const myHeaders = new Headers();
-    myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
+    myHeaders.append("api", apiKey);
     myHeaders.append("Content-Type", "application/json");
 
     let raw = JSON.stringify({

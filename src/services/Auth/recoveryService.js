@@ -1,10 +1,9 @@
 import { environmentService } from "../environmentService";
 
 const recoveryService = async (emailValue) => {
-    const {urlBackend} = environmentService();
-    console.log(urlBackend);
+    const {urlBackend, apiKey} = environmentService();
     const myHeaders = new Headers();
-    myHeaders.append("api", "1ogC7RKV419Y5XssdtcvmuRJ8RcCu451a");
+    myHeaders.append("api", apiKey);
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
