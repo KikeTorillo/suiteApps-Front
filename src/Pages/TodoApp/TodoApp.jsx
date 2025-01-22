@@ -4,12 +4,7 @@ import { TodoContext } from '../../app/context/TodoContext'
 
 import { TodoTemplate } from '../../components/templates/TodoTemplate/TodoTemplate'
 
-import { Modal } from '../../Modals/Modal'
-import { TodoForm } from '../../components/molecules/TodoForm/TodoForm'
-
 import './TodoApp.css'
-
-import { TodoListItem } from '../../components/molecules/TodoListItem/TodoListItem'
 
 
 function TodoApp() {

@@ -17,8 +17,7 @@ import './TodoTemplate.css'
 import {
   DndContext,
   closestCenter,
-  KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
@@ -58,15 +57,16 @@ function TodoTemplate({
   }
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 3,
-      },
-    }),
     useSensor(TouchSensor, {
       // Press delay of 250ms, with tolerance of 5px of movement
       activationConstraint: {
-        distance: 3,
+        delay: 0,
+        tolerance: 1
+      },
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 0,
       },
     })
   );
