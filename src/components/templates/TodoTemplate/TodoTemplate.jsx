@@ -53,23 +53,22 @@ function TodoTemplate({
     const { active, over } = event;
     const oldIndex = todos.findIndex(todo => todo.id === active.id);
     const newIndex = todos.findIndex(todo => todo.id === over.id);
-    const newOrder = arrayMove(todos,oldIndex,newIndex);
+    const newOrder = arrayMove(todos, oldIndex, newIndex);
     updateTodosOrder(newOrder);
   }
 
   const sensors = useSensors(
-      useSensor(PointerSensor, {
-          activationConstraint: {
-              distance: 3,
-          },
-      }),
-      useSensor(TouchSensor, {
-          // Press delay of 250ms, with tolerance of 5px of movement
-          activationConstraint: {
-              delay: 250,
-              tolerance: 5,
-          },
-      })
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3,
+      },
+    }),
+    useSensor(TouchSensor, {
+      // Press delay of 250ms, with tolerance of 5px of movement
+      activationConstraint: {
+        distance: 3,
+      },
+    })
   );
 
   return (
@@ -129,8 +128,8 @@ function TodoTemplate({
               >
                 {
                   searchedTodos.map((toDo) => {
-                  return <TodoListItem key={toDo.id} toDo={toDo} completeTodo={() => completeTodo(toDo)} deleteTodo={() => deleteTodo(toDo)} />
-                })
+                    return <TodoListItem key={toDo.id} toDo={toDo} completeTodo={() => completeTodo(toDo)} deleteTodo={() => deleteTodo(toDo)} />
+                  })
                 }
               </SortableContext>
             </DndContext>
