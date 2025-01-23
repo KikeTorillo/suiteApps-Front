@@ -1,7 +1,7 @@
 import { environmentService } from "../environmentService";
 
 const updateTodoService = async (toDo) => {
-    const {urlBackend} = environmentService();
+    const {urlBackend,apiKey} = environmentService();
     const myHeaders = new Headers();
     myHeaders.append("api", apiKey);
     myHeaders.append("Content-Type", "application/json");

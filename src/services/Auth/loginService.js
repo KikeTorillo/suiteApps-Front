@@ -3,7 +3,6 @@ import { environmentService } from "../environmentService";
 const loginService = async (userValue, passValue) => {
     const {urlBackend, apiKey} = environmentService();
     const myHeaders = new Headers();
-    console.log(apiKey);
     myHeaders.append("api", apiKey);
     myHeaders.append("Content-Type", "application/json");
 
